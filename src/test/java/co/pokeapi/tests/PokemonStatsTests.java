@@ -5,6 +5,7 @@ import co.pokeapi.dataTests.Pokemon;
 import co.pokeapi.steps.PokemonSteps;
 import co.pokeapi.steps.RestClient;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -22,28 +23,23 @@ public class PokemonStatsTests extends RestClient {
     @Test
     @DisplayName("Сравнение веса двух покемонов")
     public void checkWeightPokemon(){
-        Integer weightPokemon1;
-        Integer weightPokemon2;
-        List<Pokemon> pokemonList = pokemonSteps.getWeight("rattata")
+        Pokemon pokemon = new Pokemon();
+        List<Pokemon> pokemonWeight = given()
+                .when()
+                .spec(getDefaultRequestSpec())
+                .get(POKEMON+"rattata")
                 .then()
                 .extract()
                 .body()
                 .jsonPath()
-                .getList("weight", Pokemon.class);
+                .getList(".", Pokemon.class);
 
-//        weightPokemon1 = response.path("weight");
-//        response = pokemonSteps.getWeight("pidgeotto");
-//        weightPokemon2 = response.path("weight");
-//        Assertions.assertTrue(weightPokemon1 < weightPokemon2);
+        System.out.println(pokemonWeight);
     }
 
     @Test
     @DisplayName("Проверка на наличие способности покемона 'run-away' ")
     public void checkAbility(){
-
-//        pokemonSteps.getAbilities().assertThat()
-//                        .statusCode(200)
-//                                .body("abilities.ability.name", equalTo("run-away"));
         List<Ability> ability = given()
                 .when()
                 .spec(getDefaultRequestSpec())
@@ -52,7 +48,11 @@ public class PokemonStatsTests extends RestClient {
                 .extract()
                 .body()
                 .jsonPath()
-                .getList("abilities.ability.name", Ability.class);
-    int i = 1;
+                .getList("abilities.ability", Ability.class);
+//        System.out.println(ability);
+        ability.forEach(x-> System.out.println(x.getName()));
+        ability.forEach(x-> Assertions.assertTrue(x.getName().contains("run-away")));
+
+
     }
 }

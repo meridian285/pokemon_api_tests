@@ -1,8 +1,12 @@
 package co.pokeapi.dataTests;
 
 public class Ability {
-    public String name;
-    public String url;
+    private String name;
+    private String url;
+
+    public Ability(){
+
+    }
 
     public Ability(String name, String url) {
         this.name = name;
@@ -23,5 +27,13 @@ public class Ability {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    @Override
+    public String toString() {
+        return "Ability{" +
+                "name='" + name + '\'' +
+                ", url='" + url + '\'' +
+                '}';
     }
 }
