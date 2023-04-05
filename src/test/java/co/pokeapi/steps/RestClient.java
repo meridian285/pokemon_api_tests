@@ -5,6 +5,10 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 
+/**
+ * Класс с методом возвращает преднастройки(спецификация) для тестов
+ */
+
 public abstract class RestClient {
     public RequestSpecification getDefaultRequestSpec(){
         return new RequestSpecBuilder()

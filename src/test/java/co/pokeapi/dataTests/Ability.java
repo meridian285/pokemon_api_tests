@@ -1,5 +1,9 @@
 package co.pokeapi.dataTests;
 
+/**
+ * Класс способностей покемонов, POKEMON/"имя покемона"
+ */
+
 public class Ability {
     private String name;
     private String url;
