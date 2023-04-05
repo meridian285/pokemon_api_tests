@@ -33,7 +33,7 @@ public class PokemonSteps extends RestClient {
         List<Ability> ability = given()
                 .when()
                 .spec(getDefaultRequestSpec())
-                .get(POKEMON + "namePokemon")
+                .get(POKEMON+"rattata")
                 .then()
                 .extract()
                 .body()

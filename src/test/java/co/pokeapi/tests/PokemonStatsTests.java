@@ -9,10 +9,14 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static co.pokeapi.dataTests.EndPoints.POKEMON;
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class PokemonStatsTests extends RestClient {
 
@@ -40,19 +44,9 @@ public class PokemonStatsTests extends RestClient {
     @Test
     @DisplayName("Проверка на наличие способности покемона 'run-away' ")
     public void checkAbility(){
-        List<Ability> ability = given()
-                .when()
-                .spec(getDefaultRequestSpec())
-                .get(POKEMON+"rattata")
-                .then()
-                .extract()
-                .body()
-                .jsonPath()
-                .getList("abilities.ability", Ability.class);
-//        System.out.println(ability);
-        ability.forEach(x-> System.out.println(x.getName()));
-        ability.forEach(x-> Assertions.assertTrue(x.getName().contains("run-away")));
-
+        List<Ability> ability =
+        pokemonSteps.getAbility("rattata");
+        Assertions.assertTrue(ability.stream().anyMatch(x-> Objects.equals(x.getName(),"run-away")));
 
     }
 }
