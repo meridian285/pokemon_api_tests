@@ -1,6 +1,7 @@
 package co.pokeapi.tests;
 
 import co.pokeapi.dataTests.Ability;
+import co.pokeapi.dataTests.Result;
 import co.pokeapi.steps.PokemonSteps;
 import co.pokeapi.steps.RestClient;
 import org.junit.jupiter.api.Assertions;
@@ -38,8 +39,15 @@ public class PokemonStatsTests extends RestClient {
     @Test
     @DisplayName("Проверка что у каждого покемона в списке есть name не пустое")
     public void checkNamePokemon(){
-        pokemonSteps.getListNameField()
+        pokemonSteps.getListPokemon()
                 .statusCode(200)
                 .body("results.name", not(hasValue(nullValue())));
+    }
+    @Test
+    @DisplayName("Проверка что лимит покемонов не переполнен")
+    public void checkLimitPokemonList(){
+        List<Result> listPokemon = pokemonSteps.getListPokemon()
+                        .extract().body().jsonPath().getList("results", Result.class);
+        List<String> urlPokemon;
     }
 }

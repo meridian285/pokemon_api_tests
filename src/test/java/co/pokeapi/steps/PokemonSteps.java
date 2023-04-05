@@ -42,12 +42,11 @@ public class PokemonSteps extends RestClient {
     }
 
     @Step("Получаем список с полями name")
-    public ValidatableResponse getListNameField(){
+    public ValidatableResponse getListPokemon(){
         return given()
                 .when()
                 .spec(getDefaultRequestSpec())
                 .get(POKEMON+LISTPOKEMONS)
                 .then();
     }
-
 }
