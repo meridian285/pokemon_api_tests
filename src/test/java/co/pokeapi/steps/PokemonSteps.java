@@ -4,6 +4,7 @@ import co.pokeapi.dataTests.Ability;
 import co.pokeapi.dataTests.Root;
 import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
+import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.response.ValidatableResponse;
 import java.util.List;
 import static co.pokeapi.config.EndPoints.POKEMON;
@@ -19,6 +20,7 @@ public class PokemonSteps extends RestClient {
     public int getWeightPokemon(String namePokemon) {
         return given()
                 .when()
+                .filter(new AllureRestAssured())
                 .spec(getDefaultRequestSpec())
                 .get(POKEMON+"/"+namePokemon)
                 .then()
