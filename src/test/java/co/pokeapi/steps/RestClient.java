@@ -1,6 +1,7 @@
 package co.pokeapi.steps;
 
 import co.pokeapi.config.Config;
+import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
@@ -14,6 +15,7 @@ public abstract class RestClient {
         return new RequestSpecBuilder()
                 .setBaseUri(Config.getBaseUri())
                 .setContentType(ContentType.JSON)
-                .build();
+                .build()
+                .filter(new AllureRestAssured());
     }
 }

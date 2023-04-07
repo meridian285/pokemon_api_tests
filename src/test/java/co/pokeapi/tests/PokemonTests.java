@@ -37,7 +37,7 @@ public class PokemonTests {
     }
 
     @Test
-    @DisplayName("Проверка что у каждого покемона в списке есть name не пустое, запрос выдает заданное число покемонов")
+    @DisplayName("Проверка, что при запросе 1000 покемонов, у каждого покемона в списке не пустое name")
     public void checkNamePokemon(){
         int limitPoke = 1000;
         pokemonSteps.getListPokemon(limitPoke)
@@ -55,6 +55,6 @@ public class PokemonTests {
                 .extract().jsonPath().getList("results", Result.class);
         //проверяем колличество элементов полученного списка с заданным числом
         Assertions.assertEquals((long) listPokemon.size(), limitPoke,
-                "Ожидалось совпадение колличество элементов полученного списка с заданным числом");
+                "Ожидалось совпадение колличества элементов полученного списка с заданным числом");
     }
 }
