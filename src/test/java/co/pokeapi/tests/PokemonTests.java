@@ -3,8 +3,6 @@ package co.pokeapi.tests;
 import co.pokeapi.dataTests.Ability;
 import co.pokeapi.dataTests.Result;
 import co.pokeapi.steps.PokemonSteps;
-import co.pokeapi.steps.RestClient;
-import groovy.beans.ListenerList;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,7 +16,7 @@ import static org.hamcrest.Matchers.*;
  * Тестовый класс
  */
 
-public class PokemonStatsTests {
+public class PokemonTests {
     PokemonSteps pokemonSteps = new PokemonSteps();
 
     //этот тест можно было сделать более универсальным(параметризованным), но решил что этого достаточно

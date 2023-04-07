@@ -33,6 +33,7 @@ public class PokemonSteps extends RestClient {
     public List<Ability> getAbility(String namePokemon) {
         return given()
                 .when()
+                .filter(new AllureRestAssured())
                 .spec(getDefaultRequestSpec())
                 .get(POKEMON+"/"+namePokemon)
                 .then()
@@ -42,11 +43,11 @@ public class PokemonSteps extends RestClient {
                 .getList("abilities.ability", Ability.class);
     }
 
-    @Attachment(value = "Заголовок вложения", type = "text/html")
     @Step("Получаем список с полями name")
     public ValidatableResponse getListPokemon(int listPokemon){
         return given()
                 .when()
+                .filter(new AllureRestAssured())
                 .spec(getDefaultRequestSpec())
                 .get(POKEMON+"?limit="+listPokemon+"&offset=0")
                 .then();
