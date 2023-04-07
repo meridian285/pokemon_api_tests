@@ -15,7 +15,7 @@ import static org.hamcrest.Matchers.*;
 /**
  * Тестовый класс
  */
-
+//Тесты сделаны так чтобы легко было переделать их в параметризованные, добавив аннотацию
 public class PokemonTests {
     PokemonSteps pokemonSteps = new PokemonSteps();
 
