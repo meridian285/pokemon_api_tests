@@ -1,39 +1,44 @@
 package co.pokeapi.tests;
 
-import co.pokeapi.dataTests.Ability;
-import co.pokeapi.dataTests.Result;
+import co.pokeapi.dataTests.Root;
 import co.pokeapi.steps.PokemonSteps;
+import co.pokeapi.steps.RestClient;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
 import java.util.List;
-import java.util.Objects;
-
+import static co.pokeapi.config.EndPoints.*;
 import static org.hamcrest.Matchers.*;
 
 /**
  * Тестовый класс
  */
-//Тесты сделаны так чтобы легко было переделать их в параметризованные, добавив аннотацию
-public class PokemonTests {
+//Тесты сделаны так, чтобы легко было переделать их в параметризованные, добавив аннотацию
+public class PokemonTests extends RestClient {
     PokemonSteps pokemonSteps = new PokemonSteps();
 
-    //этот тест можно было сделать более универсальным(параметризованным), но решил что этого достаточно
     @Test
     @DisplayName("Сравнение веса двух покемонов")
-    public void checkWeightPokemon(){
-        int weightPokemonOne = pokemonSteps.getWeightPokemon("rattata");
-        int weightPokemonTwo = pokemonSteps.getWeightPokemon("pidgeotto");
+    public void checkUniversalStep(){
+        String firstPokemon = "rattata";
+        String secondPokemon = "pidgeotto";
+        int weightPokemonOne = pokemonSteps.getSameFields(POKEMON_NAME,firstPokemon).getWeight();
+        int weightPokemonTwo = pokemonSteps.getSameFields(POKEMON_NAME,secondPokemon).getWeight();
         Assertions.assertTrue(weightPokemonOne < weightPokemonTwo,
                 "Ожидалось что вес первого покемона меньше второго");
     }
 
     @Test
-    @DisplayName("Проверка на наличие способности у покемона 'run-away'")
-    public void checkAbility(){
-        List<Ability> ability = pokemonSteps.getAbility("rattata");
-        Assertions.assertTrue(ability.stream().anyMatch(x-> Objects.equals(x.getName(),"run-away")));
+    @DisplayName("Сравнение способностей покемонов")
+    public void checkPokemonAbility() {
+        String abilityPokemonOne = "rattata";
+        String abilityPokemonTwo = "pidgeotto";
+        String ability = "run-away";
+        Assertions.assertNotEquals(pokemonSteps.getSameFields(POKEMON_NAME, abilityPokemonOne).getAbilities()
+                        .stream().anyMatch(x -> x.getAbility().getName().contains(ability)),
+                pokemonSteps.getSameFields(POKEMON_NAME, abilityPokemonTwo).getAbilities()
+                        .stream().anyMatch(x -> x.getAbility().getName().contains(ability)),
+                "Ожидалось что у покемонов нет общей способности");
     }
 
     @Test
@@ -42,19 +47,19 @@ public class PokemonTests {
         int limitPoke = 1000;
         pokemonSteps.getListPokemon(limitPoke)
                 .statusCode(200)
-                //проверка что поля name не пустые
+                //проверка, что поля name не пустые
                 .body("results.name", not(hasValue(nullValue())));
     }
 
     @Test
-    @DisplayName("Проверка что заданный лимит списка выдает нужное колличество покемонов")
+    @DisplayName("Проверка что заданный лимит списка выдает нужное количество покемонов")
     public void checkListPokemon(){
-        int limitPoke = 1000;
-        List<Result> listPokemon = pokemonSteps.getListPokemon(limitPoke)
+        int id = 1000;
+        List<Root.Result> listPokemon = pokemonSteps.getListPokemon(id)
                 .statusCode(200)
-                .extract().jsonPath().getList("results", Result.class);
-        //проверяем колличество элементов полученного списка с заданным числом
-        Assertions.assertEquals((long) listPokemon.size(), limitPoke,
-                "Ожидалось совпадение колличества элементов полученного списка с заданным числом");
+                .extract().jsonPath().getList("results", Root.Result.class);
+        //проверяем количество элементов полученного списка с заданным числом
+        Assertions.assertEquals((long) listPokemon.size(), id,
+                "Ожидалось совпадение количества элементов полученного списка с заданным числом");
     }
 }

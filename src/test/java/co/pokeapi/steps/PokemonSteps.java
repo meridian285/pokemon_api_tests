@@ -1,52 +1,35 @@
 package co.pokeapi.steps;
 
-import co.pokeapi.dataTests.Ability;
 import co.pokeapi.dataTests.Root;
-import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
-import io.qameta.allure.restassured.AllureRestAssured;
+import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
-import java.util.List;
-import static co.pokeapi.config.EndPoints.POKEMON;
+import static co.pokeapi.config.EndPoints.*;
 import static io.restassured.RestAssured.given;
 
 /**
  * Класс для шагов для тестов
  */
 public class PokemonSteps extends RestClient {
-
-
-    @Step("Получаем  параметр Вес покемона")
-    public int getWeightPokemon(String namePokemon) {
-        return given()
+    Response response;
+    @Step("Шаг для тестов с endpoint pokemon/")
+    public Root getSameFields(String endpoint, String namePokemon){
+        return  given()
                 .when()
                 .spec(getDefaultRequestSpec())
-                .get(POKEMON+"/"+namePokemon)
+                .get(endpoint, namePokemon)
                 .then()
                 .extract()
                 .body()
-                .as(Root.class).getWeight();
-    }
-
-    @Step("Получаем список способностей покемона")
-    public List<Ability> getAbility(String namePokemon) {
-        return given()
-                .when()
-                .spec(getDefaultRequestSpec())
-                .get(POKEMON+"/"+namePokemon)
-                .then()
-                .extract()
-                .body()
-                .jsonPath()
-                .getList("abilities.ability", Ability.class);
+                .as(Root.class);
     }
 
     @Step("Получаем список с полями name")
-    public ValidatableResponse getListPokemon(int listPokemon){
+    public ValidatableResponse getListPokemon(int id){
         return given()
                 .when()
                 .spec(getDefaultRequestSpec())
-                .get(POKEMON+"?limit="+listPokemon+"&offset=0")
+                .get(POKEMON_LIMIT,id)
                 .then();
     }
 }
